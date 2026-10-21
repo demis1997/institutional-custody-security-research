@@ -10,6 +10,8 @@ A mathematically valid signature does not necessarily represent an authorized tr
 
 [Editable Word document](paper/custody-security-research.docx) · [Reproduce the experiments](experiments/README.md) · [Recorded results](results/EXPERIMENT_RESULTS.md) · [Research limitations](docs/RESEARCH_LIMITATIONS.md)
 
+**[Security Research Index](RESEARCH_INDEX.md)** · [Active AWS custody security lab](https://github.com/demis1997/aws-custody-security-lab)
+
 ## Findings and their evidence
 
 1. **Threshold signing does not establish a shared spending history.** A declared ledger model plus the implementation's real authorization function admits two individually approved reservations totaling **1.200084 ETH against a 1 ETH budget** under divergent partial histories. A central serial model rejects the second request. This is a counterexample under an explicit attacker model, not an executed exploit against PostgreSQL or native MPC.

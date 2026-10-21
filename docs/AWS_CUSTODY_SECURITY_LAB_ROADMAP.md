@@ -1,6 +1,8 @@
 # AWS Institutional Custody Security Lab
 
-**Proposed future project · Design roadmap · No AWS deployment performed**
+**Design roadmap · Local implementation now available · No AWS deployment performed**
+
+The first implementation is published in [AWS Custody Security Lab](https://github.com/demis1997/aws-custody-security-lab): modular Terraform, threat models, local compromise/recovery experiments and mocked infrastructure policy tests. This roadmap retains the broader integration work; it is not a deployment-completion record.
 
 The goal is to test whether institutional custody controls remain independent when a coordinator, signer host, administrator, or recovery domain is compromised. The starting implementation is [Quorum Custody](https://github.com/demis1997/quorum-custody), examined by [the research paper](../paper/custody-security-research.pdf). A dedicated lab repository can follow after the threat model and interface evaluation are reviewed; none is represented as already deployed.
 
