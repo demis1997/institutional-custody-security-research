@@ -1,0 +1,144 @@
+{
+  "executedAt": "2026-10-21T15:36:08.179Z",
+  "environment": {
+    "node": "v22.20.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "25.5.0",
+    "cpu": "Apple M3 Max"
+  },
+  "libraries": {
+    "postQuantum": "0.7.1",
+    "curves": "1.9.7"
+  },
+  "messageBytes": 32,
+  "limitations": "Single process JavaScript CPU verification only. Different security categories. No EVM verifier, gas, constant time analysis, signing benchmark, browser, HSM, or threshold PQ signing. One generated key/message/signature per algorithm; warm JIT and process noise influence timing.",
+  "rows": [
+    {
+      "name": "ECDSA secp256k1 compact",
+      "publicKeyBytes": 33,
+      "signatureBytes": 64,
+      "medianMs": 1.166218033333333,
+      "minMs": 1.1552680666666675,
+      "maxMs": 1.2131347000000006,
+      "batchMeansMs": [
+        1.2131347000000006,
+        1.1696236,
+        1.166218033333333,
+        1.1552680666666675,
+        1.1867611333333343,
+        1.1588583333333342,
+        1.1630513666666653
+      ],
+      "warmup": 5,
+      "batches": 7,
+      "verificationsPerBatch": 30,
+      "alteredMessageRejected": true
+    },
+    {
+      "name": "ML-DSA-44",
+      "publicKeyBytes": 1312,
+      "signatureBytes": 2420,
+      "medianMs": 1.094016666666668,
+      "minMs": 1.0778416666666695,
+      "maxMs": 1.1328569333333312,
+      "batchMeansMs": [
+        1.106877766666662,
+        1.1328569333333312,
+        1.0847903000000012,
+        1.094016666666668,
+        1.0789097000000007,
+        1.0965374999999995,
+        1.0778416666666695
+      ],
+      "warmup": 5,
+      "batches": 7,
+      "verificationsPerBatch": 30,
+      "alteredMessageRejected": true
+    },
+    {
+      "name": "ML-DSA-65",
+      "publicKeyBytes": 1952,
+      "signatureBytes": 3309,
+      "medianMs": 1.7695403000000018,
+      "minMs": 1.7411110999999968,
+      "maxMs": 1.7833680333333328,
+      "batchMeansMs": [
+        1.7833680333333328,
+        1.7536208333333283,
+        1.7736375000000029,
+        1.7755333333333359,
+        1.7508513999999953,
+        1.7411110999999968,
+        1.7695403000000018
+      ],
+      "warmup": 5,
+      "batches": 7,
+      "verificationsPerBatch": 30,
+      "alteredMessageRejected": true
+    },
+    {
+      "name": "ML-DSA-87",
+      "publicKeyBytes": 2592,
+      "signatureBytes": 4627,
+      "medianMs": 2.766222199999993,
+      "minMs": 2.7264597000000017,
+      "maxMs": 2.8197472333333433,
+      "batchMeansMs": [
+        2.766222199999993,
+        2.795083333333332,
+        2.761776400000008,
+        2.7264597000000017,
+        2.7480763666666763,
+        2.8197472333333433,
+        2.7997778000000078
+      ],
+      "warmup": 5,
+      "batches": 7,
+      "verificationsPerBatch": 30,
+      "alteredMessageRejected": true
+    },
+    {
+      "name": "SLH-DSA-SHA2-128s",
+      "publicKeyBytes": 32,
+      "signatureBytes": 7856,
+      "medianMs": 1.124605566666666,
+      "minMs": 1.120280566666679,
+      "maxMs": 1.2293153000000074,
+      "batchMeansMs": [
+        1.2293153000000074,
+        1.1387402999999874,
+        1.120280566666679,
+        1.1302930666666573,
+        1.124605566666666,
+        1.1236375000000105,
+        1.121538899999996
+      ],
+      "warmup": 5,
+      "batches": 7,
+      "verificationsPerBatch": 30,
+      "alteredMessageRejected": true
+    },
+    {
+      "name": "Hybrid AND ECDSA + ML-DSA-65",
+      "publicKeyBytes": 1985,
+      "signatureBytes": 3373,
+      "medianMs": 2.9543680333333366,
+      "minMs": 2.8780277666666736,
+      "maxMs": 2.9687805666666764,
+      "batchMeansMs": [
+        2.9687805666666764,
+        2.95667636666667,
+        2.9679736333333344,
+        2.927984733333339,
+        2.919230533333333,
+        2.8780277666666736,
+        2.9543680333333366
+      ],
+      "warmup": 5,
+      "batches": 7,
+      "verificationsPerBatch": 30,
+      "alteredMessageRejected": true
+    }
+  ]
+}

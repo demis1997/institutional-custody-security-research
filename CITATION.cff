@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this research or its experiments, please cite this repository and paper."
+type: article
+title: "Securing Institutional Digital Asset Custody: Private Keys, Distributed Trust, and the Uncomfortable Arrival of Quantum Computing"
+authors:
+  - family-names: Konstantinou
+    given-names: Dimitris
+    website: "https://github.com/demis1997"
+date-released: 2026-10-21
+version: "1.0.0"
+url: "https://github.com/demis1997/institutional-custody-security-research"
+repository-code: "https://github.com/demis1997/institutional-custody-security-research"
+license: MIT
+keywords:
+  - institutional custody
+  - threshold ECDSA
+  - transaction authorization
+  - recovery
+  - post quantum cryptography
+abstract: >-
+  A source-based case study of institutional digital asset custody, examining
+  signing authority, policy enforcement, distributed state, recovery trust,
+  and the implications of quantum attacks on elliptic curve signatures.
+  Reproducible application tests, declared models, a synthetic local-chain
+  transfer, and verification microbenchmarks accompany a proposed migration
+  architecture. This is an independent research artifact, not a peer-reviewed
+  publication or production custody certification.
