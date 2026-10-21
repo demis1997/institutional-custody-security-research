@@ -1,9 +1,0 @@
-[extend]
-useDefault = true
-
-[[allowlists]]
-description = "Three verified SHA-256 source-file hashes misidentified as keys by default rules; no general credential exceptions."
-condition = "AND"
-paths = ['''(^|/)docs/SOURCE_MANIFEST\.json$''']
-regexTarget = "secret"
-regexes = ['''^(b31484feb7895a682fc359f225daf290def866d9ba065837f12fc0149392960c|ebcb7bbb95bad3d906c5ba00820129b19cbe9a7ad20402373f63a67531a4416e|a079cd3a7920761b18cb866f62ae665c3b5632b63e55849a7cc67789bbcc7e66)$''']
