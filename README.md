@@ -1,16 +1,37 @@
-# Securing Institutional Digital Asset Custody
+# Securing Institutional Digital Asset Custody: Private Keys, Distributed Trust, and the Uncomfortable Arrival of Quantum Computing
 
-### Private Keys, Distributed Trust, and the Uncomfortable Arrival of Quantum Computing
+**Dimitris Konstantinou · Independent security research · 21 October 2026 · Version 1.0.0**
 
-**Dimitris Konstantinou · Independent research · 21 October 2026**
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23577319.svg)](https://doi.org/10.5281/zenodo.23577319)
 
-A mathematically valid signature does not necessarily represent an authorized transaction. Institutional custody depends on who can sign, who can approve, which history participants trust, and what recovery can silently restore. This research examines those boundaries in a concrete Ethereum custody implementation, then asks what must change when elliptic curve signatures face quantum attacks.
+A mathematically valid signature does not necessarily represent an authorized transaction. This research examines the gap between protecting a key and controlling what it can authorize.
 
-**[Read the Full Research Paper (PDF)](paper/custody-security-research.pdf)**
+**[Published paper on Zenodo](https://zenodo.org/records/23577319)** · **[Download PDF](https://zenodo.org/records/23577319/files/custody-security-research.pdf?download=1)** · [Repository PDF](paper/custody-security-research.pdf)
 
-[Editable Word document](paper/custody-security-research.docx) · [Reproduce the experiments](experiments/README.md) · [Recorded results](results/EXPERIMENT_RESULTS.md) · [Research limitations](docs/RESEARCH_LIMITATIONS.md)
+[Reproduce the experiments](experiments/README.md) · [Recorded results](results/EXPERIMENT_RESULTS.md) · [Quorum Custody implementation](https://github.com/demis1997/quorum-custody) · [Security Research Index](RESEARCH_INDEX.md)
 
-**[Security Research Index](RESEARCH_INDEX.md)** · [Active AWS custody security lab](https://github.com/demis1997/aws-custody-security-lab)
+## Abstract
+
+Institutional digital asset custody distributes signing, approvals, transaction state, and recovery across components whose assumptions may not compose. This revision-pinned case study of Quorum Custody combines source analysis, 26 repeated unit tests, a divergent spending-history model, approval expiry experiments on local Anvil, and recovery function experiments. It shows how valid approvals can coexist with inconsistent budget histories, how ordinary signed transaction bytes can outlive application authorization, and why recovery checkpoints need independent protection. Local post-quantum signature verification measurements support a proposed migration architecture covering spending, upgrades, and recovery. The evidence concerns specific enforcement boundaries; it does not establish production readiness or introduce a new cryptographic attack.
+
+Published independently on Zenodo as a **preprint**. No peer-review status or institutional affiliation is claimed.
+
+## Research questions and contributions
+
+- **Who can authorize asset movement?** Trace the boundaries between MPC signing, HSM protection, exact transaction approvals, policy enforcement, and Ethereum validation.
+- **Which history do signers trust?** Use real authorization calls with an executable divergent-ledger model to examine whether individually approved transactions preserve one global budget.
+- **What survives expiry or rollback?** Test application expiry against portable signed bytes and test recovery functions against retained, missing, altered, and jointly rolled-back checkpoints.
+- **What must quantum migration preserve?** Measure selected local signature verifiers and propose mandatory classical-and-post-quantum authorization across spending, upgrade, and recovery paths.
+
+The contributions are an evidence-classified institutional compromise matrix, reproducible scoped experiments with retained observations, and a staged migration proposal. Models, source properties, historical integration reports, and results executed for the paper remain separate.
+
+## Institutional custody threat model
+
+The protected assets include signing shares, approval and policy keys, transport identities, exact transaction bytes, spending reservations, nonce history, and recovery checkpoints. The paper considers stolen API credentials, compromised approval devices or signers, hostile coordinators or databases, transport interference, shared deployment authority, privileged recovery operators, and a future adversary capable of solving the relevant elliptic curve discrete logarithm problem. Capabilities are considered separately unless a scenario explicitly combines them.
+
+The baseline assumes fewer than two of three signing participants are compromised, sufficient approval keys remain trustworthy, and honest participants retain valid state and identities. A signing threshold does not establish consistent accounting, trustworthy review devices, or independent administration. A holder of already signed ordinary Ethereum bytes can submit them outside the custody worker; a threshold quorum can bypass application controls.
+
+The inspected prototype runs under **one host account**, with local encrypted shares and nearby wrapping keys. It demonstrates neither HSM execution nor independent institutional trust domains. HSM/KMS protection, separate release authority, and independently governed recovery are architectural requirements to investigate, not deployed properties of this case study. See the paper's **Section 4 and Table 1**, and the [full limitations](docs/RESEARCH_LIMITATIONS.md).
 
 ## Findings and their evidence
 
@@ -21,7 +42,7 @@ A mathematically valid signature does not necessarily represent an authorized tr
 
 These results examine documented trust boundaries in [Quorum Custody](https://github.com/demis1997/quorum-custody), at [commit `691e253`](https://github.com/demis1997/quorum-custody/tree/691e253ccdc2756afe215a23384eb72e2d4fde3c). They do not claim a newly discovered exploitable vulnerability in Coinbase MPC or a production custodian.
 
-## Experiments
+## Experimental evidence
 
 | Experiment | Research question | Observed result | Verification scope | Reproduction |
 | --- | --- | --- | --- | --- |
@@ -47,9 +68,13 @@ The repository unit suite was repeated with **26 passed, zero failed, zero skipp
 
 *Consequences depend on which authority is compromised. A single compromised share, a threshold quorum, a coordinator, and a recovery controller have different capabilities.*
 
-## Post quantum custody
+## Post-quantum cryptography and migration
 
-The paper compares **ML-DSA** and **SLH-DSA**, measures local verification, and proposes hybrid authorization that requires both classical and post quantum evidence over the same operation. A contract account must enforce that rule at the asset boundary, including upgrades and recovery. Off-chain PQ approvals do not protect an ordinary account whose ECDSA key still suffices to move its assets.
+The paper examines **ML-DSA-44/65/87**, **SLH-DSA-SHA2-128s**, and an **ECDSA + ML-DSA-65 logical AND**, alongside the distinction between post-quantum signatures and key establishment. Selecting a standardized primitive does not provide a threshold signing protocol. Distributed post-quantum signing is reviewed as separate research, with no implementation claimed here.
+
+The executed JavaScript benchmark records public key/signature sizes and seven batches of 30 valid verifications per row after five warmups, using one generated key/message per scheme. Each row also rejects an altered message. The [raw benchmark](results/verification-benchmark.json) preserves all batch means; fixed order, JIT effects, host load, and different security categories limit comparison. These are local CPU observations, not Ethereum gas, signing throughput, HSM performance, or threshold-PQ measurements.
+
+The proposed architecture requires both classical and post-quantum evidence over the same operation. A contract account must enforce that rule at the asset boundary, including upgrades and recovery. Off-chain PQ approvals do not protect an ordinary account whose ECDSA key still suffices to move its assets.
 
 ![Proposed post quantum custody migration](figures/quantum-migration.svg)
 
@@ -74,6 +99,14 @@ Setup fetches the exact application commit into ignored `source/quorum-custody/`
 
 Full native MPC/PostgreSQL integration, independently administered recovery, and native outage campaigns remain **Not Executed**. Follow [the detailed instructions and limitations](experiments/README.md) before interpreting the output.
 
+## Limitations and future research
+
+This is one prototype at one pinned revision. The paper did not execute full native MPC/PostgreSQL integration, malicious native signer scenarios, independently administered recovery, or native outage and crash campaigns. Historical implementation results do not verify the paper's later submission path. The 26 passing unit tests are a recorded suite outcome, not assurance of full-stack security; the paper also identifies a parser property-test assertion-handling issue that needs repair.
+
+Next steps are to run the pinned full stack in an isolated environment, test reservation consistency under explicit coordinator/database faults, inject crashes at persistence boundaries, and rehearse domain loss with independent recovery authority. A hybrid account prototype needs verifier correctness, malformed-input testing, gas measurements, bundler admission, upgrade and guardian controls, and asset reconciliation before operational claims are justified.
+
+The proposed independent signer domains and quantum migration architecture remain unimplemented in this research. No production custody certification, novel cryptographic attack, or quantum hardware timeline is asserted. [The limitations document](docs/RESEARCH_LIMITATIONS.md) lists unexecuted cases and interpretation constraints.
+
 ## Repository guide
 
 - [Paper and editable document](paper/) · [Authoring source](paper/source/README.md)
@@ -82,14 +115,26 @@ Full native MPC/PostgreSQL integration, independently administered recovery, and
 - [Pinned source manifest](docs/SOURCE_MANIFEST.json) · [Redistribution and attribution review](docs/REDISTRIBUTION.md)
 - [AWS Institutional Custody Security Lab roadmap](docs/AWS_CUSTODY_SECURITY_LAB_ROADMAP.md)
 
-## Citation
+## How to Cite
 
-Use [CITATION.cff](CITATION.cff), or cite:
+Use [CITATION.cff](CITATION.cff), or cite the published version:
 
-> Dimitris Konstantinou. *Securing Institutional Digital Asset Custody: Private Keys, Distributed Trust, and the Uncomfortable Arrival of Quantum Computing*. Independent research artifact, version 1.0.0, 21 October 2026. https://github.com/demis1997/institutional-custody-security-research
+> Konstantinou, D. (2026). *Securing Institutional Digital Asset Custody: Private Keys, Distributed Trust, and the Uncomfortable Arrival of Quantum Computing* (Version 1.0.0) [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.23577319
 
-No DOI, institutional affiliation, or peer reviewed publication status is claimed.
+```bibtex
+@misc{konstantinou2026custody,
+  author    = {Konstantinou, Dimitris},
+  title     = {Securing Institutional Digital Asset Custody: Private Keys, Distributed Trust, and the Uncomfortable Arrival of Quantum Computing},
+  year      = {2026},
+  month     = oct,
+  publisher = {Zenodo},
+  version   = {1.0.0},
+  doi       = {10.5281/zenodo.23577319},
+  url       = {https://doi.org/10.5281/zenodo.23577319},
+  note      = {Independent research preprint; published October 21, 2026}
+}
+```
 
 ## Related implementation and license
 
-[Quorum Custody](https://github.com/demis1997/quorum-custody) is the separately maintained implementation examined by this research. This repository does not modify it or vendor its full source tree; setup fetches the pinned revision. The research paper, original diagrams, authoring source, and harness are released under the [MIT license](LICENSE). Third-party rights and retained notices are documented in [Redistribution and attribution](docs/REDISTRIBUTION.md).
+[Quorum Custody](https://github.com/demis1997/quorum-custody) is the separately maintained implementation examined by this research. This repository does not modify it or vendor its full source tree; setup fetches the pinned revision. The repository retains its existing [MIT license](LICENSE). The [published Zenodo record](https://zenodo.org/records/23577319) lists the paper under [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/); `CITATION.cff` identifies the research software and provides the published paper as its preferred citation. Third-party rights and retained notices are documented in [Redistribution and attribution](docs/REDISTRIBUTION.md).
